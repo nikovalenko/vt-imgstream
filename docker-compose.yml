@@ -1,0 +1,11 @@
+version: "3"
+services:
+  angular-app:
+    container_name: vt-imgstream
+    image: vt-imgstream
+    ports:
+      - "4200:4200"
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: bash -c "npm install && ng serve --host 0.0.0.0"
