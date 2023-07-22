@@ -6,7 +6,7 @@ Replace API_URL in constants.ts for the appropriate one.
 
 Run `docker-compose up --build` to build the project.
 
-There are simple unit tests present for the image-display.component
+There are simple unit tests present for the image-display.component.
 There is a main.tf file for AWS deployment but currently it is a mock.
 
 # VtImgstream
