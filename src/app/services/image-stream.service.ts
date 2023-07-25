@@ -35,7 +35,7 @@ export class ImageStreamService {
     };
 
     // EventSource "onerror" handler
-    this.eventSource.onerror = (error: Event) => {
+    this.eventSource.onerror = (_error: Event) => {
       const errMessage = !this.pictureData.length ? 'Picture not found.' : null;
       this.errorSubject.next(errMessage);
       this.isImageLoadedSubject.next(false);
@@ -78,7 +78,7 @@ export class ImageStreamService {
   }
 
   getCompleteImage(): string | null {
-    if (this.pictureData.length > 0 && !this.completeImageBlobUrl) {
+    if (this.pictureData.length > 0) {
       // Sort the packets based on their frameOffset
       this.pictureData.sort((a, b) => a?.frameOffset - b?.frameOffset);
 

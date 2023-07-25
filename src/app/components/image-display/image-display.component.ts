@@ -15,6 +15,7 @@ export class ImageDisplayComponent implements OnInit {
   public imageStreamSubscription?: Subscription | null;
   public error$?: Observable<string | null>;
   public isImageLoaded$?: Observable<boolean>;
+  public isLiveStreaming: boolean = false;
 
   constructor(
     private imageStreamService: ImageStreamService,
@@ -32,6 +33,10 @@ export class ImageDisplayComponent implements OnInit {
     }
   }
 
+  updateIsLive() {
+    this.isLiveStreaming = !this.isLiveStreaming;
+  }
+
   private updateImageHW() {
     if (this.completeImageBlobUrl) {
       const img = new Image();
@@ -44,10 +49,13 @@ export class ImageDisplayComponent implements OnInit {
     }
   }
 
-  updateUnsubscribe() {
+  update() {
     this.completeImageBlobUrl = this.imageStreamService.getCompleteImage();
     this.updateImageHW();
     this.changeDetector.detectChanges();
+  }
+
+  unsubscribe() {
     if (this.imageStreamSubscription) {
       this.imageStreamSubscription.unsubscribe();
     }
@@ -57,8 +65,9 @@ export class ImageDisplayComponent implements OnInit {
     this.imageStreamSubscription = this.imageStreamService
       .startImageStream(this.testNumber)
       .subscribe((isEnded: boolean) => {
+        this.update();
         if (isEnded) {
-          this.updateUnsubscribe();
+          this.unsubscribe();
         }
       });
   }
