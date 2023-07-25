@@ -1,4 +1,14 @@
 <div class="component">
+  <mat-slide-toggle
+    class="streaming-toggle"
+    color="primary"
+    [disabled]="isImageLoaded$ | async"
+    [checked]="isLiveStreaming"
+    (toggleChange)="updateIsLive()"
+  >
+    Live streaming
+  </mat-slide-toggle>
+
   <mat-card>
     <mat-card-content>
       <form class="form" (ngSubmit)="startStream()">
@@ -25,7 +35,7 @@
     </mat-card-content>
   </mat-card>
 
-  <ng-container *ngIf="isImageLoaded$ | async">
+  <ng-container *ngIf="!isLiveStreaming && (isImageLoaded$ | async)">
     <div class="spinner">
       <mat-spinner [diameter]="70"></mat-spinner>
     </div>
@@ -39,7 +49,7 @@
     *ngIf="
       imageStreamSubscription &&
       completeImageBlobUrl &&
-      !(isImageLoaded$ | async)
+      (isLiveStreaming || !(isImageLoaded$ | async))
     "
     class="img-container"
   >

@@ -9,6 +9,7 @@ import { ImageDisplayComponent } from './image-display.component';
 import { Subscription, of } from 'rxjs';
 import { ImageStreamService } from '../../services/image-stream.service';
 import { CommonModule } from '@angular/common';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatButtonModule } from '@angular/material/button';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -27,6 +28,7 @@ describe('ImageDisplayComponent', () => {
         MatFormFieldModule,
         MatCardModule,
         MatProgressSpinnerModule,
+        MatSlideToggleModule,
         BrowserAnimationsModule,
       ],
       providers: [ImageStreamService],
