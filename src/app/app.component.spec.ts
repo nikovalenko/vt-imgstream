@@ -5,6 +5,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { ComponentsModule } from './components/components.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ImageDisplayStandaloneComponent } from './components/image-display-standalone/image-display-standalone.component';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
@@ -15,6 +16,7 @@ describe('AppComponent', () => {
         AppRoutingModule,
         ComponentsModule,
         BrowserAnimationsModule,
+        ImageDisplayStandaloneComponent,
       ],
       declarations: [AppComponent],
     }).compileComponents();
