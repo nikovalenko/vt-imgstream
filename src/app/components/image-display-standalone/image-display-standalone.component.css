@@ -1,0 +1,29 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  max-width: fit-content;
+  align-items: center;
+}
+
+.component {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin: 2%;
+}
+
+.img-container {
+  margin: 2%;
+  padding: 2%;
+  max-width: 80%;
+}
+
+.spinner {
+  position: relative;
+  margin-top: 30%;
+}
+
+.streaming-toggle {
+  padding: 2%;
+}

@@ -67,8 +67,9 @@ describe('ImageDisplayComponent', () => {
   });
 
   // Test the spinner visibility
-  it('should show the spinner when isImageLoaded$ is true', () => {
+  it('should show the spinner when isImageLoaded$ is true and isLiveStreaming is false', () => {
     component.isImageLoaded$ = of(true);
+    component.isLiveStreaming = false;
     fixture.detectChanges();
     const spinner = fixture.debugElement.query(By.css('.spinner'));
     expect(spinner).toBeTruthy();

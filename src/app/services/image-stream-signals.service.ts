@@ -1,29 +1,27 @@
-import { Injectable, NgZone } from '@angular/core';
-import { Observable, Subject, BehaviorSubject } from 'rxjs';
-import { API_URL } from '../constants';
+import { Injectable, NgZone, inject, signal } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
 import { PacketFormat } from '../interfaces';
+import { API_URL } from '../constants';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ImageStreamService {
+export class ImageStreamSignalsService {
+  error = signal<string | null>(null);
+  isImageLoaded = signal<boolean>(false);
   private eventSource?: EventSource;
   private pictureData: PacketFormat[] = [];
-  private errorSubject: Subject<string | null> = new Subject<string | null>();
   private isStreamEndedSubject: Subject<boolean> = new Subject<boolean>();
-  private isImageLoadedSubject: BehaviorSubject<boolean> =
-    new BehaviorSubject<boolean>(false);
   private completeImageBlobUrl: string | null = '';
-
-  constructor(private zone: NgZone) {}
+  private zone = inject(NgZone);
 
   startImageStream(testNumber: number): Observable<boolean> {
     this.destroyBlobUrl();
 
     const url = `${API_URL}?testNumber=${testNumber}`;
     this.eventSource = new EventSource(url);
-    this.isImageLoadedSubject.next(true);
-    this.errorSubject.next(null);
+    this.isImageLoaded.set(true);
+    this.error.set(null);
 
     // EventSource "onmessage" handler
     this.eventSource.onmessage = (event: MessageEvent) => {
@@ -37,21 +35,13 @@ export class ImageStreamService {
     // EventSource "onerror" handler
     this.eventSource.onerror = (_error: Event) => {
       const errMessage = !this.pictureData.length ? 'Picture not found.' : null;
-      this.errorSubject.next(errMessage);
-      this.isImageLoadedSubject.next(false);
+      this.error.update(() => errMessage);
+      this.isImageLoaded.set(false);
       this.isStreamEndedSubject.next(true);
       this.closeStream();
     };
 
     return this.isStreamEndedSubject.asObservable();
-  }
-
-  getErrorObservable(): Observable<string | null> {
-    return this.errorSubject.asObservable();
-  }
-
-  isImageLoadedObservable(): Observable<boolean> {
-    return this.isImageLoadedSubject.asObservable();
   }
 
   private closeStream() {
